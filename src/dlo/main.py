@@ -1,14 +1,14 @@
 from __future__ import print_function
 import re, json
 
-from .utils import GET
+from utils import GET
 
 class Data(object):
 	
 	def __init__(self, **kwargs):
 
 		self._pandas = True
-		try: import pandas as pd
+		try: import pandas
 		except ImportError: self._pandas = False
 		
 		for key, value in kwargs.items():
@@ -162,8 +162,9 @@ class Data(object):
 
 		if pandify and self._pandas:
 
-			_data = response.json()
+			import pandas as pd
 
+			_data = response.json()
 			for i, result in enumerate(_data['resultSets']):
 
 				if result['rowSet']==[]:
