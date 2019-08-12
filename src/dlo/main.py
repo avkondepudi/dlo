@@ -152,7 +152,7 @@ class Data(object):
 		params_dict = {}
 		for p in self._info['params']:
 			params_dict[p] = self.getParamValueForUrl(p)
-			url_to_print += p.replace(" ", "%20") + "=" + self.getParamValueForUrl(p).replace(" ", "%20") + "&"
+			url_to_print += str(p).replace(" ", "%20") + "=" + str(self.getParamValueForUrl(p)).replace(" ", "%20") + "&"
 
 		if print_url: print(url_to_print[:-1])
 		response = GET(url, params=params_dict)
