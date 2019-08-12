@@ -2,6 +2,12 @@
 
 A lightweight (5 KB) Python client to retrieve NBA data from stats.nba.com.
 
+## Installation
+
+```bash
+pip install dlo
+```
+
 ## Dependencies
 
 * requests (required)
