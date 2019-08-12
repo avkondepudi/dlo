@@ -26,7 +26,7 @@ LOCAL = {                                           # set local parameters
     "SeasonType": "Regular Season"
 }
 
-d = Data(**LOCAL)                                   # create instance of Data class
+d = Data(**LOCAL)                                   # create instance of Data class with local parameters
 d.endpoint = "playergamelog"                        # set endpoint
 
 data = d.getData()                                  # get data (game log of D'Angelo Russell for 2018-19 Regular Season)
