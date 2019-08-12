@@ -184,7 +184,3 @@ class Data(object):
 
 		return response.json()
 
-if __name__=="__main__":
-
-	d = Data()
-
