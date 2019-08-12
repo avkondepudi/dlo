@@ -2,6 +2,12 @@
 
 A lightweight (5 KB) Python client to retrieve NBA data from stats.nba.com.
 
+## Installation
+
+```bash
+pip install dlo
+```
+
 ## Dependencies
 
 * requests (required)
@@ -20,7 +26,7 @@ LOCAL = {                                           # set local parameters
     "SeasonType": "Regular Season"
 }
 
-d = Data(**LOCAL)                                   # create instance of Data class
+d = Data(**LOCAL)                                   # create instance of Data class with local parameters
 d.endpoint = "playergamelog"                        # set endpoint
 
 data = d.getData()                                  # get data (game log of D'Angelo Russell for 2018-19 Regular Season)
