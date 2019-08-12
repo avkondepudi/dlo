@@ -8,7 +8,7 @@ class Data(object):
 	def __init__(self, **kwargs):
 
 		self._pandas = True
-		try: import pandas
+		try: import pandas as pd
 		except ImportError: self._pandas = False
 		
 		for key, value in kwargs.items():
