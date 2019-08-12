@@ -1,3 +1,4 @@
+from __future__ import print_function
 import requests
 
 HEADERS = {'user-agent': 'Safari/537.36'}

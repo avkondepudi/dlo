@@ -1,5 +1,5 @@
-import re
-import json
+from __future__ import print_function
+import re, json
 
 from .utils import GET
 
@@ -56,13 +56,13 @@ class Data(object):
 
 	def getEndpointResponse(self):
 
-		url = f"http://stats.nba.com/stats/{self._endpoint}/?"
+		url = "http://stats.nba.com/stats/%s/?" % (self._endpoint)
 		return GET(url)
 	
 	def getEndpointParams(self):
 	
 		response = self.getEndpointResponse()
-		if self.getEndpointResponse().status_code!=400: raise ValueError(f"Endpoint {self._endpoint} not valid, possibly deprecated")
+		if self.getEndpointResponse().status_code!=400: raise ValueError("Endpoint %s not valid, possibly deprecated" % (self._endpoint))
 			
 		msg = response.text
 		msg.split(';')
@@ -76,7 +76,7 @@ class Data(object):
 
 	def getInfo(self):
 
-		url = f"http://stats.nba.com/stats/{self._endpoint}/?"
+		url = "http://stats.nba.com/stats/%s/?" % (self._endpoint)
 
 		params = self.getEndpointParams()
 		params_info = {}
@@ -87,7 +87,7 @@ class Data(object):
 			temp_dict[param] = "a"
 
 		response = GET(url, params=temp_dict)
-		if response.status_code != 400: raise ValueError(f'Endpoint {self._endpoint} not valid')
+		if response.status_code != 400: raise ValueError("Endpoint %s not valid" % (self._endpoint))
 		
 		msg = response.text.split(';')
 		for line in msg:
@@ -133,7 +133,7 @@ class Data(object):
 		if param in self.__dict__.keys(): 
 			val = self.__dict__[param]
 			if self.isParamValueValid(param, val)!=1: return val
-			else: raise ValueError(f"{val} for param {param} not valid")
+			else: raise ValueError("%s for param %s not valid" % (val, param))
 		else:
 			if self.isParamValueValid(param, "")==-1: 
 				if "Date" in param: return ""
@@ -146,7 +146,7 @@ class Data(object):
 
 	def getData(self, print_url=False, pandify=False):
 
-		url = f"http://stats.nba.com/stats/{self._endpoint}"
+		url = "http://stats.nba.com/stats/%s" % (self._endpoint)
 
 		url_to_print = url + "/?"
 		params_dict = {}
@@ -157,8 +157,8 @@ class Data(object):
 		if print_url: print(url_to_print[:-1])
 		response = GET(url, params=params_dict)
 		if response.status_code != 200:
-			if response.status_code == 500: raise ValueError(f"Server error, response status code {response.status_code}")
-			else: raise ValueError(f"Incorrect param values passed, response status code {response.status_code}")
+			if response.status_code == 500: raise ValueError("Server error, response status code %d" % (response.status_code))
+			else: raise ValueError("Incorrect param values passed, response status code %d" % (response.status_code))
 
 		if pandify and self._pandas:
 
