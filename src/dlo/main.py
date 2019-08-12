@@ -7,8 +7,6 @@ class Data(object):
 	
 	def __init__(self, **kwargs):
 
-		logging.info('hi')
-
 		self._pandas = True
 		try: import pandas
 		except ImportError: self._pandas = False
