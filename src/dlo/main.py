@@ -1,7 +1,9 @@
-from __future__ import print_function
+import logging
 import re, json
 
-from utils import GET
+from .utils import GET, EXCEPTION
+
+logging.basicConfig(level=logging.INFO)
 
 class Data(object):
 	
@@ -10,6 +12,9 @@ class Data(object):
 		self._pandas = True
 		try: import pandas
 		except ImportError: self._pandas = False
+		else: import pandas as pd
+
+		self._logger = logging.getLogger(__name__)
 		
 		for key, value in kwargs.items():
 			setattr(self, key, value)
@@ -62,7 +67,8 @@ class Data(object):
 	def getEndpointParams(self):
 	
 		response = self.getEndpointResponse()
-		if self.getEndpointResponse().status_code!=400: raise ValueError("Endpoint %s not valid, possibly deprecated" % (self._endpoint))
+		if self.getEndpointResponse().status_code!=400:
+			EXCEPTION(self._logger, "Endpoint %s not valid, possibly deprecated" % (self._endpoint))
 			
 		msg = response.text
 		msg.split(';')
@@ -87,7 +93,8 @@ class Data(object):
 			temp_dict[param] = "a"
 
 		response = GET(url, params=temp_dict)
-		if response.status_code != 400: raise ValueError("Endpoint %s not valid" % (self._endpoint))
+		if response.status_code != 400:
+			EXCEPTION(self._logger, "Endpoint %s not valid" % (self._endpoint))
 		
 		msg = response.text.split(';')
 		for line in msg:
@@ -133,7 +140,8 @@ class Data(object):
 		if param in self.__dict__.keys(): 
 			val = self.__dict__[param]
 			if self.isParamValueValid(param, val)!=1: return val
-			else: raise ValueError("%s for param %s not valid" % (val, param))
+			else:
+				EXCEPTION(self._logger, "%s for param %s not valid" % (val, param))
 		else:
 			if self.isParamValueValid(param, "")==-1: 
 				if "Date" in param: return ""
@@ -154,15 +162,16 @@ class Data(object):
 			params_dict[p] = self.getParamValueForUrl(p)
 			url_to_print += str(p).replace(" ", "%20") + "=" + str(self.getParamValueForUrl(p)).replace(" ", "%20") + "&"
 
-		if print_url: print(url_to_print[:-1])
+		if print_url: self._logger.info(url_to_print[:-1])
 		response = GET(url, params=params_dict)
 		if response.status_code != 200:
-			if response.status_code == 500: raise ValueError("Server error, response status code %d" % (response.status_code))
-			else: raise ValueError("Incorrect param values passed, response status code %d" % (response.status_code))
+			if response.status_code == 500:
+				self._logger.critical("Server error, response status code %d", response.status_code)
+				return
+			else:
+				EXCEPTION(self._logger, "Incorrect param values passed, response status code %d" % (response.status_code))
 
 		if pandify and self._pandas:
-
-			import pandas as pd
 
 			_data = response.json()
 			for i, result in enumerate(_data['resultSets']):
@@ -181,7 +190,6 @@ class Data(object):
 
 			return _data
 
-		if pandify: print('Pandas library not found')
+		if pandify: self._logger.info("Pandas library not found")
 
 		return response.json()
-
