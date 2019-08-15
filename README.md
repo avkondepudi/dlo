@@ -53,7 +53,10 @@ d.local                                             # returns local parameters p
 
 d.endpoint = "playergamelog"                        # set endpoint
 
-d.getEndpointParams()                               # returns list of parameters for endpoint
+d.endpoint                                          # returns current endpoint
+                                                    # output: playergamelog
+
+d.getEndpointParams()                               # returns list of parameters for current endpoint
                                                     # output: ['PlayerID', 'Season', 'SeasonType']
 
 d.getParamInfo("SeasonType")                        # returns list of values for parameter and whether required
