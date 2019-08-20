@@ -4,7 +4,7 @@ dlo
 ``dlo`` is a lightweight, dynamic Python client to pull NBA data from stats.nba.com_.
 
 Overview
-__________
+____________________
 
 This client utilizes error messages from the stats.nba.com API to:
 
@@ -19,7 +19,7 @@ It is possible to build a documentation of the API given possible endpoints with
 Inspired by nba_py_.
 
 Installation
-__________
+____________________
 
 .. code-block:: bash
 
@@ -32,13 +32,13 @@ __________
     pip install .
 
 Dependencies
-__________
+____________________
 
 * requests_ (required)
 * pandas_ (recommended)
 
 Usage
-__________
+____________________
 
 A list of endpoints can be found here_. IDs (PlayerID, GameID, etc.) can be found on stats.nba.com_.
 
