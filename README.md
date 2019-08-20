@@ -24,7 +24,8 @@ Inspired by [nba_py](https://github.com/seemethere/nba_py).
 pip install dlo
 
 # latest version
-git clone https://github.com/avkondepudi/dlo.git    # latest version
+git clone https://github.com/avkondepudi/dlo.git
+cd ~/dlo
 pip install .
 ```
 
