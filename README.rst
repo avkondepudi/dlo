@@ -1,9 +1,10 @@
 dlo
-=====
+====
 
-A lightweight (6 KB), dynamic Python client to pull NBA data from [stats.nba.com](https://stats.nba.com/).
+``dlo`` is a lightweight, dynamic Python client to pull NBA data from stats.nba.com_.
 
-## Overview
+Overview
+_____
 
 This client utilizes error messages from the stats.nba.com API to:
 
@@ -15,9 +16,10 @@ This client utilizes error messages from the stats.nba.com API to:
 
 It is possible to build a documentation of the API given possible endpoints with this client.
 
-Inspired by [nba_py](https://github.com/seemethere/nba_py).
+Inspired by nba_py_.
 
-## Installation
+Installation
+_________
 
 .. code-block:: bash
 
@@ -29,15 +31,16 @@ Inspired by [nba_py](https://github.com/seemethere/nba_py).
     cd ./dlo
     pip install .
 
+Dependencies
+_____
 
-## Dependencies
+* requests_ (required)
+* pandas_ (recommended)
 
-* [requests](https://github.com/psf/requests) (required)
-* [pandas](https://github.com/pandas-dev/pandas) (recommended)
+Usage
+_____
 
-## Usage
-
-A list of endpoints can be found [here](https://github.com/seemethere/nba_py/wiki/Completed-Work-Log) and [here](https://any-api.com/nba_com/nba_com/docs/API_Description). IDs (PlayerID, GameID, etc.) can be found on [stats.nba.com](https://stats.nba.com/).
+A list of endpoints can be found here_. IDs (PlayerID, GameID, etc.) can be found on stats.nba.com_.
 
 .. code-block:: python
 
@@ -66,3 +69,10 @@ A list of endpoints can be found [here](https://github.com/seemethere/nba_py/wik
     >>> data = d.getData()                              # returns data (game log of D'Angelo Russell for the 2018-19 Regular Season)
     >>> data_in_pandas_format = d.getData(pandify=True)
 
+ External hyperlinks, like Python_.
+
+.. _stats.nba.com: https://stats.nba.com/ 
+.. _nba_py: https://github.com/seemethere/nba_py
+.. _requests: https://github.com/psf/requests
+.. _pandas: https://github.com/pandas-dev/pandas
+.. _here: https://any-api.com/nba_com/nba_com/docs/API_Description
