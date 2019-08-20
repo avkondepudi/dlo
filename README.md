@@ -25,7 +25,7 @@ pip install dlo
 
 # latest version
 git clone https://github.com/avkondepudi/dlo.git
-cd ~/dlo
+cd ./dlo
 pip install .
 ```
 
