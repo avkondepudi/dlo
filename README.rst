@@ -69,8 +69,6 @@ A list of endpoints can be found here_. IDs (PlayerID, GameID, etc.) can be foun
     >>> data = d.getData()                              # returns data (game log of D'Angelo Russell for the 2018-19 Regular Season)
     >>> data_in_pandas_format = d.getData(pandify=True)
 
- External hyperlinks, like Python_.
-
 .. _stats.nba.com: https://stats.nba.com/ 
 .. _nba_py: https://github.com/seemethere/nba_py
 .. _requests: https://github.com/psf/requests
