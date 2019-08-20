@@ -3,16 +3,15 @@ import re, json
 
 from .utils import GET, EXCEPTION
 
+HAS_PANDAS = True
+try: from pandas import DataFrame
+except ImportError: HAS_PANDAS = False
+
 logging.basicConfig(level=logging.INFO)
 
 class Data(object):
 	
 	def __init__(self, **kwargs):
-
-		self._pandas = True
-		try: import pandas
-		except ImportError: self._pandas = False
-		else: import pandas as pd
 
 		self._logger = logging.getLogger(__name__)
 		
@@ -62,13 +61,13 @@ class Data(object):
 	def getEndpointResponse(self):
 
 		url = "http://stats.nba.com/stats/%s/?" % (self._endpoint)
-		return GET(url)
+		return GET(url, self._logger)
 	
 	def getEndpointParams(self):
 	
 		response = self.getEndpointResponse()
 		if self.getEndpointResponse().status_code!=400:
-			EXCEPTION(self._logger, "Endpoint %s not valid, possibly deprecated" % (self._endpoint))
+			EXCEPTION("Endpoint %s not valid, possibly deprecated" % (self._endpoint), self._logger)
 			
 		msg = response.text
 		msg.split(';')
@@ -92,9 +91,9 @@ class Data(object):
 		for param in params:
 			temp_dict[param] = "a"
 
-		response = GET(url, params=temp_dict)
+		response = GET(url, self._logger, params=temp_dict)
 		if response.status_code != 400:
-			EXCEPTION(self._logger, "Endpoint %s not valid" % (self._endpoint))
+			EXCEPTION("Endpoint %s not valid" % (self._endpoint), self._logger)
 		
 		msg = response.text.split(';')
 		for line in msg:
@@ -141,7 +140,7 @@ class Data(object):
 			val = self.__dict__[param]
 			if self.isParamValueValid(param, val)!=1: return val
 			else:
-				EXCEPTION(self._logger, "%s for param %s not valid" % (val, param))
+				EXCEPTION("%s for param %s not valid" % (val, param), self._logger)
 		else:
 			if self.isParamValueValid(param, "")==-1: 
 				if "Date" in param: return ""
@@ -155,23 +154,24 @@ class Data(object):
 	def getData(self, print_url=False, pandify=False):
 
 		url = "http://stats.nba.com/stats/%s" % (self._endpoint)
-
 		url_to_print = url + "/?"
 		params_dict = {}
+
 		for p in self._info['params']:
 			params_dict[p] = self.getParamValueForUrl(p)
 			url_to_print += str(p).replace(" ", "%20") + "=" + str(self.getParamValueForUrl(p)).replace(" ", "%20") + "&"
 
 		if print_url: self._logger.info(url_to_print[:-1])
-		response = GET(url, params=params_dict)
+
+		response = GET(url, self._logger, params=params_dict)
 		if response.status_code != 200:
 			if response.status_code == 500:
 				self._logger.critical("Server error, response status code %d", response.status_code)
 				return
 			else:
-				EXCEPTION(self._logger, "Incorrect param values passed, response status code %d" % (response.status_code))
+				EXCEPTION("Incorrect param values passed, response status code %d" % (response.status_code), self._logger)
 
-		if pandify and self._pandas:
+		if pandify and HAS_PANDAS:
 
 			_data = response.json()
 			for i, result in enumerate(_data['resultSets']):
@@ -179,11 +179,11 @@ class Data(object):
 				if result['rowSet']==[]:
 					_result = {}
 					_result['name'] = result['name']
-					_result['data'] = pd.DataFrame()
+					_result['data'] = DataFrame()
 				else:
 					_result = {}
 					_result['name'] = result['name']
-					_result['data'] = pd.DataFrame.from_dict(result['rowSet'])
+					_result['data'] = DataFrame.from_dict(result['rowSet'])
 					_result['data'].columns = result['headers']
 
 				_data['resultSets'][i] = _result
