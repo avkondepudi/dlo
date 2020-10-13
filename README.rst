@@ -3,6 +3,8 @@ dlo
 
 ``dlo`` is a lightweight, dynamic Python client to pull NBA data from stats.nba.com_.
 
+**This repository is no longer being maintained.**
+
 Overview
 ____________________
 
